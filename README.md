@@ -18,3 +18,27 @@ mvn exec:java -Dexec.mainClass="com.worace.spatial4jexample.Main"
 *** Shape 3 (Cloned) Bounding Box Width (also expect 2): ***
 358.0
 ```
+
+### Example at a Glance
+
+```java
+    String wkt = "POLYGON((179 0, 179 1, -179 1, -179 0, 179 0))";
+    Geometry geom = new WKTReader().read(wkt);
+
+    JtsSpatialContextFactory factory = new JtsSpatialContextFactory();
+    factory.datelineRule = DatelineRule.width180;
+    JtsSpatialContext ctx = factory.newSpatialContext();
+
+    JtsGeometry shp = ctx.makeShape(geom);
+    System.out.println("*** Shape 1 Bounding Box Width (should be 2): ***");
+    System.out.println(shp.getBoundingBox().getWidth());
+
+    JtsGeometry shp2 = ctx.makeShape(geom);
+    System.out.println("*** Shape 2 Bounding Box Width (also expect 2): ***");
+    System.out.println(shp2.getBoundingBox().getWidth());
+
+
+    JtsGeometry shp3 = ctx.makeShape((Geometry) geom.clone());
+    System.out.println("*** Shape 3 (Cloned) Bounding Box Width (also expect 2): ***");
+    System.out.println(shp3.getBoundingBox().getWidth());
+```
